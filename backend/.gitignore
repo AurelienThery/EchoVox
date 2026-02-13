@@ -1,0 +1,14 @@
+/.bundle
+/vendor/bundle
+/tmp/*
+!/tmp/.keep
+/storage/*
+!/storage/.keep
+.byebug_history
+/log/*
+!/log/.keep
+*.swp
+*.swo
+.DS_Store
+.env
+.env.local
