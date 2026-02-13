@@ -15,6 +15,11 @@ module EchoVoxBackend
     config.load_defaults 7.0
     config.api_only = true
 
+    # Session configuration for Devise JWT
+    config.session_store :cookie_store, key: '_echovox_session'
+    config.middleware.use ActionDispatch::Cookies
+    config.middleware.use config.session_store, config.session_options
+
     # CORS configuration
     config.middleware.insert_before 0, Rack::Cors do
       allow do
