@@ -1,139 +1,68 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-:root {
-  --primary-color: #2563eb;
-  --secondary-color: #7c3aed;
-  --background-color: #ffffff;
-  --text-color: #1f2937;
-  --border-color: #e5e7eb;
-  --success-color: #10b981;
-  --error-color: #ef4444;
-  --focus-color: #3b82f6;
-  --highlight-color: #fef3c7;
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  line-height: 1.6;
-  font-size: 18px; /* Larger base font for accessibility */
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
 }
 
-/* Accessibility: Focus visible styles */
-*:focus-visible {
-  outline: 3px solid var(--focus-color);
-  outline-offset: 2px;
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
 }
 
-/* Skip to main content link for screen readers */
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: var(--primary-color);
-  color: white;
-  padding: 8px;
-  text-decoration: none;
-  z-index: 100;
-}
-
-.skip-link:focus {
-  top: 0;
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  :root {
-    --border-color: #000000;
-  }
-  
-  button {
-    border: 2px solid currentColor;
-  }
-}
-
-/* Reduce motion for users who prefer it */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-
-/* Text highlighting for speech */
-.highlighted {
-  background-color: var(--highlight-color);
-  font-weight: bold;
-  transition: background-color 0.2s ease;
-}
-
-/* Loading state */
-.loading {
-  opacity: 0.6;
-  pointer-events: none;
-}
-
-/* Button styles */
 button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
   cursor: pointer;
-  font-size: 1rem;
-  padding: 12px 24px;
-  border: 2px solid transparent;
-  border-radius: 8px;
-  background-color: var(--primary-color);
-  color: white;
-  transition: all 0.2s;
-  min-height: 44px; /* WCAG touch target size */
-  min-width: 44px;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
 }
 
-button:hover:not(:disabled) {
-  opacity: 0.9;
-  transform: translateY(-1px);
-}
-
-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Input styles */
-input, textarea, select {
-  font-size: 1rem;
-  padding: 12px;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
-  min-height: 44px;
-}
-
-input:focus, textarea:focus, select:focus {
-  border-color: var(--focus-color);
-  outline: none;
-}
-
-/* Container */
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* Card */
-.card {
-  background: white;
-  border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 24px;
-  margin: 16px 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
 }

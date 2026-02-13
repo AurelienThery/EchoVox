@@ -1,341 +1,189 @@
 # EchoVox
 
-Une application fullstack accessible pour la simplification de texte et la synthèse vocale, conforme aux normes WCAG.
+EchoVox is an accessible text-to-speech application that combines text simplification, speech synthesis, and pictogram visualization to make written content more accessible.
 
-## 🎯 Fonctionnalités
+## Features
 
-- **Backend Rails 7 API**: Gestion des documents et utilisateurs avec authentification JWT
-- **Microservice Python FastAPI**: Simplification de texte en FALC avec LangChain et pictogrammes ARASAAC
-- **Frontend React**: Interface accessible avec contrôles Web Speech API
-- **Accessibilité WCAG**: Conception prioritaire pour l'accessibilité
-- **Docker Compose**: Orchestration complète des services
+### Backend (Ruby on Rails 7 API)
+- **Document Management**: Create and manage text documents
+- **Text Processing**: Integration with Python FastAPI service for text simplification
+- **JWT Authentication**: Secure user authentication using Devise JWT
+- **RESTful API**: Clean API endpoints for document processing
 
-## 🏗️ Architecture
+### Frontend (React)
+- **Speech Synthesis**: Text-to-speech using Web Speech API
+  - Adjustable rate, pitch, and volume controls
+  - Voice gender selection
+  - Real-time word highlighting during playback
+- **Language Support**: Multiple language support (English, Spanish, French, German, Italian, Portuguese)
+- **ARASAAC Integration**: Visual pictogram support for enhanced comprehension
+- **Responsive Design**: WCAG compliant accessible interface
+
+## Project Structure
 
 ```
 EchoVox/
-├── backend/           # Rails 7 API (port 3000)
-├── python-service/    # FastAPI microservice (port 8000)
-├── frontend/          # React application (port 5173)
-└── docker-compose.yml # Orchestration des services
+├── backend/           # Rails 7 API
+│   ├── app/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   └── services/
+│   ├── config/
+│   ├── db/
+│   └── ...
+└── frontend/          # React application
+    ├── src/
+    │   ├── components/
+    │   ├── services/
+    │   └── ...
+    └── ...
 ```
 
-### Services
+## Installation
 
-1. **Backend (Rails 7)**
-   - Modèles: User, Document
-   - API RESTful avec authentification JWT
-   - Appelle le microservice Python pour simplification
+### Prerequisites
+- Ruby 3.2+
+- Node.js 18+
+- SQLite3
 
-2. **Microservice Python (FastAPI)**
-   - Simplification FALC avec LangChain
-   - Intégration API ARASAAC pour pictogrammes
-   - Support multilingue (FR, EN, ES)
+### Backend Setup
 
-3. **Frontend (React)**
-   - Interface accessible (WCAG 2.1 AA)
-   - Contrôles Web Speech API (vitesse, tonalité, voix)
-   - Affichage texte + pictogrammes
-   - Surlignage pendant la lecture
-
-## 🚀 Démarrage Rapide
-
-### Prérequis
-
-- Docker et Docker Compose
-- (Optionnel) Clé API OpenAI pour la simplification LLM avancée
-
-### Installation
-
-1. **Cloner le repository**
-   ```bash
-   git clone https://github.com/AurelienThery/EchoVox.git
-   cd EchoVox
-   ```
-
-2. **Configurer les variables d'environnement**
-   ```bash
-   cp .env.example .env
-   # Éditer .env et ajouter votre OPENAI_API_KEY (optionnel)
-   ```
-
-3. **Lancer les services**
-   ```bash
-   docker-compose up --build
-   ```
-
-4. **Accéder à l'application**
-   - Frontend: http://localhost:5173
-   - Backend API: http://localhost:3000
-   - Python Service: http://localhost:8000
-   - API Docs: http://localhost:8000/docs
-
-### Premiers pas
-
-1. Créer un compte via l'interface à http://localhost:5173/register
-2. Créer un nouveau document
-3. Le texte sera automatiquement simplifié (FALC)
-4. Utiliser les contrôles vocaux pour écouter le texte
-5. Voir les pictogrammes associés
-
-## 📚 Documentation API
-
-### Backend API (Rails)
-
-#### Authentication
-
+1. Navigate to the backend directory:
 ```bash
-# Register
-POST /auth/register
-{
-  "name": "User Name",
-  "email": "user@example.com",
-  "password": "password123"
-}
-
-# Login
-POST /auth/login
-{
-  "email": "user@example.com",
-  "password": "password123"
-}
+cd backend
 ```
 
-#### Documents
-
+2. Install dependencies:
 ```bash
-# List documents
-GET /documents
-Authorization: Bearer <token>
-
-# Get document
-GET /documents/:id
-Authorization: Bearer <token>
-
-# Create document
-POST /documents
-Authorization: Bearer <token>
-{
-  "document": {
-    "text": "Votre texte ici"
-  },
-  "auto_simplify": true,
-  "locale": "fr"
-}
-
-# Simplify document
-POST /documents/:id/simplify
-Authorization: Bearer <token>
-{
-  "locale": "fr"
-}
-
-# Delete document
-DELETE /documents/:id
-Authorization: Bearer <token>
+bundle install
 ```
 
-### Python Service API
-
+3. Set up the database:
 ```bash
-# Simplify text
-POST /simplify
+bundle exec rake db:create db:migrate
+```
+
+4. Start the Rails server:
+```bash
+bundle exec rails server -p 3000
+```
+
+The API will be available at `http://localhost:3000`
+
+### Frontend Setup
+
+1. Navigate to the frontend directory:
+```bash
+cd frontend
+```
+
+2. Install dependencies:
+```bash
+npm install
+```
+
+3. Copy the environment file:
+```bash
+cp .env.example .env
+```
+
+4. Start the development server:
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`
+
+## API Endpoints
+
+### Authentication
+- `POST /signup` - Register a new user
+- `POST /login` - Login and receive JWT token
+- `DELETE /logout` - Logout and revoke token
+
+### Documents
+- `GET /api/v1/documents` - List all documents
+- `GET /api/v1/documents/:id` - Get a specific document
+- `POST /api/v1/documents/process` - Process text and create document
+
+## Environment Variables
+
+### Backend
+- `DEVISE_JWT_SECRET_KEY` - Secret key for JWT tokens
+- `PYTHON_SERVICE_URL` - URL of the Python text simplification service (default: http://localhost:8000)
+
+### Frontend
+- `VITE_API_BASE_URL` - Backend API URL (default: http://localhost:3000)
+
+## Python Service Integration
+
+The backend expects a Python FastAPI service for text simplification. The service should expose:
+
+```
+POST /process
 {
-  "text": "Votre texte complexe",
-  "locale": "fr"
+  "text": "Your text here",
+  "language": "en"
 }
 
-# Get pictograms
-POST /pictograms
+Response:
 {
-  "keywords": ["maison", "école", "livre"],
-  "locale": "fr"
+  "simplified_text": "Simplified version",
+  "pictogram_links": {}
 }
 ```
 
-## 🎨 Fonctionnalités d'Accessibilité
+If the Python service is not available, the system will fall back to using the original text.
 
-### WCAG 2.1 AA Conformance
+## ARASAAC API
 
-- ✅ Contraste des couleurs conforme
-- ✅ Taille de police adaptable
-- ✅ Navigation au clavier complète
-- ✅ Focus visible sur tous les éléments interactifs
-- ✅ Étiquettes ARIA appropriées
-- ✅ Structure sémantique HTML
-- ✅ Support du mode contraste élevé
-- ✅ Support de la réduction des mouvements
-- ✅ Cibles tactiles minimum 44x44px
+EchoVox integrates with the ARASAAC API for pictogram support:
+- API Base: `https://api.arasaac.org/api/pictograms`
+- Endpoint: `/{locale}/search/{term}`
+- Supported locales: en, es, fr, de, it, pt
 
-### Web Speech API
+## Usage
 
-- **Vitesse**: 0.5x à 2x
-- **Tonalité**: 0 à 2
-- **Volume**: 0% à 100%
-- **Sélection de voix**: Toutes les voix disponibles
-- **Genre de voix**: Automatiquement détecté
-- **Surlignage**: Mot en cours de lecture
+1. **Register/Login**: Create an account or login to access the application
+2. **Enter Text**: Type or paste text in the input area
+3. **Select Language**: Choose your preferred language from the dropdown
+4. **Process**: Click "Simplify & Prepare" to process the text
+5. **Listen**: Use the speech controls to hear the text read aloud
+6. **Adjust Settings**: Fine-tune rate, pitch, and volume to your preference
+7. **View Pictograms**: Load pictograms for visual comprehension aid
 
-### Simplification FALC
+## Accessibility Features
 
-- Phrases courtes et simples
-- Vocabulaire courant
-- Voix active
-- Une idée par phrase
-- Exemples concrets
+- WCAG 2.1 Level AA compliant
+- Keyboard navigation support
+- Screen reader friendly
+- High contrast mode compatible
+- Adjustable text sizes
+- Real-time word highlighting for easier following
 
-## 🛠️ Développement
+## Technologies Used
 
-### Structure du Projet
+### Backend
+- Ruby on Rails 7
+- Devise & Devise-JWT
+- SQLite3
+- HTTParty
+- Rack-CORS
 
-#### Backend (Rails)
-```
-backend/
-├── app/
-│   ├── controllers/
-│   │   ├── application_controller.rb
-│   │   ├── authentication_controller.rb
-│   │   └── documents_controller.rb
-│   └── models/
-│       ├── user.rb
-│       └── document.rb
-├── config/
-├── db/
-│   └── migrate/
-└── lib/
-```
+### Frontend
+- React
+- Vite
+- Web Speech API
+- ARASAAC API
 
-#### Python Service
-```
-python-service/
-├── app/
-│   ├── main.py
-│   └── services/
-│       ├── text_simplifier.py
-│       └── pictogram_service.py
-└── requirements.txt
-```
+## License
 
-#### Frontend (React)
-```
-frontend/
-├── src/
-│   ├── components/
-│   │   ├── Header.jsx
-│   │   ├── Login.jsx
-│   │   ├── Register.jsx
-│   │   ├── DocumentList.jsx
-│   │   ├── DocumentViewer.jsx
-│   │   ├── CreateDocument.jsx
-│   │   └── SpeechControls.jsx
-│   ├── hooks/
-│   │   └── useSpeechSynthesis.js
-│   ├── services/
-│   │   ├── api.js
-│   │   ├── authService.js
-│   │   └── documentService.js
-│   └── App.jsx
-└── package.json
-```
+This project is open source and available under the MIT License.
 
-### Commandes de Développement
+## Contributing
 
-```bash
-# Lancer en mode développement
-docker-compose up
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-# Voir les logs
-docker-compose logs -f [service]
+## Support
 
-# Arrêter les services
-docker-compose down
-
-# Rebuild un service
-docker-compose up --build [service]
-
-# Accéder à un container
-docker-compose exec backend bash
-docker-compose exec python-service bash
-docker-compose exec frontend sh
-```
-
-### Backend Rails
-
-```bash
-# Console Rails
-docker-compose exec backend bundle exec rails console
-
-# Migrations
-docker-compose exec backend bundle exec rails db:migrate
-
-# Seeds
-docker-compose exec backend bundle exec rails db:seed
-
-# Tests
-docker-compose exec backend bundle exec rspec
-```
-
-### Python Service
-
-```bash
-# Tests Python
-docker-compose exec python-service pytest
-
-# Accéder à Python shell
-docker-compose exec python-service python
-```
-
-### Frontend React
-
-```bash
-# Installer dépendances
-docker-compose exec frontend npm install
-
-# Linter
-docker-compose exec frontend npm run lint
-
-# Build production
-docker-compose exec frontend npm run build
-```
-
-## 🔒 Sécurité
-
-- Authentification JWT
-- Hachage bcrypt des mots de passe
-- CORS configuré
-- Variables d'environnement pour les secrets
-- Validation des entrées
-- Protection CSRF
-
-## 🌍 Internationalisation
-
-Langues supportées:
-- Français (fr) - Par défaut
-- Anglais (en)
-- Espagnol (es)
-
-## 📝 Licence
-
-MIT License - voir LICENSE pour plus de détails
-
-## 👥 Contribution
-
-Les contributions sont les bienvenues! Voir CONTRIBUTING.md pour les guidelines.
-
-## 🐛 Signaler un Bug
-
-Ouvrir une issue sur GitHub avec:
-- Description du bug
-- Étapes pour reproduire
-- Comportement attendu
-- Captures d'écran si applicable
-
-## 📞 Support
-
-Pour toute question ou assistance:
-- Ouvrir une issue sur GitHub
-- Documentation: Voir /docs
-
----
-
-**EchoVox** - Rendre la communication accessible à tous 🎙️♿
+For issues, questions, or contributions, please open an issue on GitHub.

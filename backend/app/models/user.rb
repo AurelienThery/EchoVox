@@ -1,9 +1,7 @@
 class User < ApplicationRecord
-  has_secure_password
-  
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :validatable,
+         :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
+
   has_many :documents, dependent: :destroy
-  
-  validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
-  validates :name, presence: true
-  validates :password, length: { minimum: 6 }, if: -> { new_record? || !password.nil? }
 end
