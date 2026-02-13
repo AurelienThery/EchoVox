@@ -34,7 +34,7 @@ const SpeechControls = ({ speech, onStop }) => {
           {/* Voice Selection */}
           <div className="control-group">
             <label htmlFor="voice-select">
-              Voix ({speech.voices.length} disponible{speech.voices.length > 1 ? 's' : ''})
+              Voix ({speech.voices.length} disponibles)
             </label>
             <select
               id="voice-select"

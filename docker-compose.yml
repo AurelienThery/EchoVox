@@ -34,6 +34,8 @@ services:
       DATABASE_NAME: echovox_development
       RAILS_ENV: development
       PYTHON_SERVICE_URL: http://python-service:8000
+      ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3000
+      SECRET_KEY_BASE: ${SECRET_KEY_BASE:-development_secret_key_base}
     depends_on:
       postgres:
         condition: service_healthy
@@ -52,6 +54,7 @@ services:
     environment:
       OPENAI_API_KEY: ${OPENAI_API_KEY:-}
       ENVIRONMENT: development
+      ALLOWED_ORIGINS: http://localhost:5173,http://localhost:3000
     stdin_open: true
     tty: true
 

@@ -1,5 +1,11 @@
 class JsonWebToken
-  SECRET_KEY = Rails.application.credentials.secret_key_base || ENV['SECRET_KEY_BASE'] || 'echovox_secret_key_development'
+  SECRET_KEY = Rails.application.credentials.secret_key_base || ENV['SECRET_KEY_BASE'] || begin
+    # Only use fallback in development/test environments
+    if Rails.env.production?
+      raise 'SECRET_KEY_BASE must be set in production environment'
+    end
+    'echovox_secret_key_development'
+  end
   
   def self.encode(payload, exp = 24.hours.from_now)
     payload[:exp] = exp.to_i

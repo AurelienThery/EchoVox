@@ -9,10 +9,12 @@ from .services.pictogram_service import PictogramService
 
 app = FastAPI(title="EchoVox Simplification Service")
 
-# CORS middleware
+# CORS middleware - configure allowed origins based on environment
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, specify actual origins
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

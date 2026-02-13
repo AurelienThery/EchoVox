@@ -5,9 +5,12 @@
 
 # Read more: https://github.com/cyu/rack-cors
 
+# Configure allowed origins from environment variable
+allowed_origins = ENV.fetch('ALLOWED_ORIGINS', 'http://localhost:5173').split(',')
+
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '*'  # In production, specify actual domains
+    origins allowed_origins
 
     resource '*',
       headers: :any,
