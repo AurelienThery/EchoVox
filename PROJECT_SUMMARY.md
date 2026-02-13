@@ -179,7 +179,7 @@ EchoVox/
 
 **Python Service**:
 - Python 3.11
-- FastAPI 0.104
+- FastAPI 0.109.1 (patched ReDoS vulnerability)
 - LangChain 0.1
 - HTTPX
 - Pydantic
